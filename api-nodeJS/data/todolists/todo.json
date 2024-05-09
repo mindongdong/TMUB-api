@@ -1,0 +1,43 @@
+{
+  "Lifestyle": [
+    {
+      "startTime": "01.01",
+      "endTime": "01.02",
+      "title": "New Year Celebration"
+    },
+    {
+      "startTime": "02.14",
+      "endTime": "02.14",
+      "title": "Valentine's Day"
+    },
+    {
+      "startTime": "05.09",
+      "endTime": "05.29",
+      "title": "test2"
+    }
+  ],
+  "Work": [
+    {
+      "startTime": "01.01",
+      "endTime": "01.02",
+      "title": "New Year Celebration"
+    },
+    {
+      "startTime": "02.14",
+      "endTime": "02.14",
+      "title": "Valentine's Day"
+    }
+  ],
+  "Study": [
+    {
+      "startTime": "01.01",
+      "endTime": "01.02",
+      "title": "New Year Celebration"
+    },
+    {
+      "startTime": "02.14",
+      "endTime": "02.14",
+      "title": "Valentine's Day"
+    }
+  ]
+}
