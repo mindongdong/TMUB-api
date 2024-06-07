@@ -1,43 +1,38 @@
 {
-  "Lifestyle": [
+  "대학원 업무": [
     {
-      "startTime": "01.01",
-      "endTime": "01.02",
-      "title": "New Year Celebration"
+      "startTime": "05.10",
+      "endTime": "05.14",
+      "title": "LLM 하운드 기획 구체화"
     },
     {
-      "startTime": "02.14",
-      "endTime": "02.14",
-      "title": "Valentine's Day"
-    },
-    {
-      "startTime": "05.09",
-      "endTime": "05.29",
-      "title": "test2"
+      "startTime": "05.10",
+      "endTime": "05.17",
+      "title": "숭실대 박사님과 미팅"
     }
   ],
-  "Work": [
+  "개인 연구 및 작업": [
     {
-      "startTime": "01.01",
-      "endTime": "01.02",
-      "title": "New Year Celebration"
+      "startTime": "05.10",
+      "endTime": "05.17",
+      "title": "LLM 공부하기"
     },
     {
-      "startTime": "02.14",
-      "endTime": "02.14",
-      "title": "Valentine's Day"
+      "startTime": "05.10",
+      "endTime": "05.24",
+      "title": "할 일 관리 웹 초안 완성"
     }
   ],
-  "Study": [
+  "일상": [
     {
-      "startTime": "01.01",
-      "endTime": "01.02",
-      "title": "New Year Celebration"
+      "startTime": "05.10",
+      "endTime": "05.10",
+      "title": "PostgreSQL 세미나 참석"
     },
     {
-      "startTime": "02.14",
-      "endTime": "02.14",
-      "title": "Valentine's Day"
+      "startTime": "05.10",
+      "endTime": "05.11",
+      "title": "혜주 데이트"
     }
   ]
 }

@@ -1,7 +1,6 @@
-// todo.js
-import express from 'express';
-import fs from 'fs';
-import path from 'path';
+const express = require('express');
+const fs = require('fs');
+const path = require('path');
 
 
 const router = express.Router();
@@ -49,4 +48,4 @@ router.post('/categories', (req, res) => {
   });
 });
 
-export default router;
+module.exports = router;

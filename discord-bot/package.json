@@ -1,8 +1,8 @@
 {
-  "name": "api-nodejs",
+  "name": "discord-bot",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -10,7 +10,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "express": "^4.19.2"
+    "axios": "^1.7.2",
+    "discord.js": "^14.15.3"
   }
 }
