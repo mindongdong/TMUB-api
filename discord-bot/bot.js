@@ -29,9 +29,9 @@ const LEADERBOARD_URL = `${API_URL}/discord/leaderboard`;
 client.once("ready", () => {
   console.log("Discord bot is ready");
 
-  // 9시와 18시에 메시지를 보내는 작업 예약
+  // 10시와 18시에 메시지를 보내는 작업 예약
   cron.schedule(
-    "0 9 * * *",
+    "0 10 * * *",
     () => {
       const channel = client.channels.cache.find(
         (channel) => channel.name === "출퇴근"
