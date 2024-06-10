@@ -2,7 +2,9 @@ version: '3.8'
 
 services:
   api-server:
-    build: ./api-nodeJS
+    build: 
+      context: ./api-nodeJS
+      dockerfile: Dockerfile
     ports:
       - "3000:3000"
     volumes:
@@ -12,7 +14,9 @@ services:
     restart: always
 
   discord-bot:
-    build: ./discord-bot
+    build:
+      context: ./discord-bot
+      dockerfile: Dockerfile
     depends_on:
       - api-server
     environment:
