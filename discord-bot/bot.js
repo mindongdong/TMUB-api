@@ -62,6 +62,17 @@ client.on("messageCreate", async (message) => {
     } catch (error) {
       message.channel.send(`리더보드 조회에 실패했습니다: ${error.message}`);
     }
+  } else if (message.content.startsWith("!help")) {
+    const helpMessage = `
+\`\`\`
+사용 가능한 명령어:
+1. !출근 - 출근 시간을 기록합니다.
+2. !퇴근 - 퇴근 시간을 기록합니다. (출근 기록이 없는 경우, 오류 메시지를 출력합니다)
+3. !조회 - 당일 근무 시간 및 기록된 출퇴근 시간을 조회합니다.
+4. !help - 사용 가능한 명령어를 보여줍니다.
+\`\`\`
+    `;
+    message.channel.send(helpMessage);
   }
 });
 
