@@ -6,11 +6,12 @@ services:
       context: ./api-nodeJS
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3333:3333"
     volumes:
       - ./api-nodeJS:/app
     environment:
       - NODE_ENV=production
+      - TZ=Asia/Seoul
     restart: always
 
   discord-bot:
@@ -21,5 +22,7 @@ services:
       - api-server
     environment:
       - NODE_ENV=production
-      - API_URL=http://api-server:3000
+      - API_URL=http://api-server:3333
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+      - TZ=Asia/Seoul
     restart: always

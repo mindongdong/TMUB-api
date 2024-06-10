@@ -5,7 +5,8 @@ const {
   GatewayIntentBits,
   Partials,
 } = require("discord.js");
-const { DISCORD_BOT_TOKEN } = require("./config");
+const cron = require("node-cron");
+const TOKEN = process.env.DISCORD_BOT_TOKEN;
 
 // Discord 봇 설정
 const client = new Client({
@@ -20,14 +21,44 @@ const client = new Client({
 
 client.commands = new Collection();
 
-const port = 3000;
+const API_URL = process.env.API_URL || "http://localhost:3333";
 
-const TOKEN = DISCORD_BOT_TOKEN;
-const API_URL = `http://localhost:${port}/discord/record`;
-const LEADERBOARD_URL = `http://localhost:${port}/discord/leaderboard`;
+const RECORD_URL = `${API_URL}/discord/record`;
+const LEADERBOARD_URL = `${API_URL}/discord/leaderboard`;
 
 client.once("ready", () => {
   console.log("Discord bot is ready");
+
+  // 9시와 18시에 메시지를 보내는 작업 예약
+  cron.schedule(
+    "0 9 * * *",
+    () => {
+      const channel = client.channels.cache.find(
+        (channel) => channel.name === "출퇴근"
+      );
+      if (channel) {
+        channel.send("좋은 아침입니다! !출근 하시기 바랍니다.");
+      }
+    },
+    {
+      timezone: "Asia/Seoul",
+    }
+  );
+
+  cron.schedule(
+    "0 18 * * *",
+    () => {
+      const channel = client.channels.cache.find(
+        (channel) => channel.name === "출퇴근"
+      );
+      if (channel) {
+        channel.send("퇴근 시간이 다가왔습니다! !퇴근 하시기 바랍니다.");
+      }
+    },
+    {
+      timezone: "Asia/Seoul",
+    }
+  );
 });
 
 client.on("messageCreate", async (message) => {
@@ -42,7 +73,7 @@ client.on("messageCreate", async (message) => {
     const userId = message.author.id;
     const username = message.author.username;
     try {
-      const response = await axios.post(API_URL, {
+      const response = await axios.post(RECORD_URL, {
         user_id: userId,
         username: username,
         action: action,

@@ -5,7 +5,7 @@ const todoRoutes = require('./api/todo');
 const discordRoutes = require('./api/discord');
 
 const app = express();
-const port = 3000;
+const port = 3333;
 
 app.use(cors());
 app.use(express.json());

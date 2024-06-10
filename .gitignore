@@ -2,6 +2,9 @@
 node_modules
 /dist
 
+# timeblocks 폴더에 있는 YYYY-MM-DD.json 파일 외에 모든 파일을 무시합니다.
+timeblocks/*
+!timeblocks/*.json
 
 # local env files
 .env

@@ -14,4 +14,4 @@ RUN npm install
 COPY . .
 
 # 봇 시작 명령어
-CMD ["node", "bot.js"]
+CMD ["npm", "start"]
