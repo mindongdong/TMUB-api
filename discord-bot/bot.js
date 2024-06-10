@@ -81,7 +81,7 @@ client.on("messageCreate", async (message) => {
       const timestamp = new Date(response.data.timestamp);
       const date = `${timestamp.getMonth() + 1}월 ${timestamp.getDate()}일`;
       const time = `${timestamp.getHours()}시 ${timestamp.getMinutes()}분`;
-      const messageText = `<@${userId}>님 당일 ${time}에 ${action}하셨습니다.\n${response.data.leaderboard}`;
+      const messageText = `<@${userId}>님 ${date} ${time}에 ${action}하셨습니다.\n${response.data.leaderboard}`;
       message.channel.send(messageText);
     } catch (error) {
       message.channel.send(error.response.data.message);
