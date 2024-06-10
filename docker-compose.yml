@@ -9,6 +9,7 @@ services:
       - ./api-nodeJS:/app
     environment:
       - NODE_ENV=production
+    restart: always
 
   discord-bot:
     build: ./discord-bot
@@ -17,3 +18,4 @@ services:
     environment:
       - NODE_ENV=production
       - API_URL=http://api-server:3000
+    restart: always
