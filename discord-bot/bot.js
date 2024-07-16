@@ -29,15 +29,17 @@ const LEADERBOARD_URL = `${API_URL}/discord/leaderboard`;
 client.once("ready", () => {
   console.log("Discord bot is ready");
 
-  // 10시와 18시에 메시지를 보내는 작업 예약
+  // 주중 10시와 18시에 메시지를 보내는 작업 예약
   cron.schedule(
-    "0 10 * * *",
+    "0 10 * * 1-5",
     () => {
       const channel = client.channels.cache.find(
         (channel) => channel.name === "출퇴근"
       );
       if (channel) {
-        channel.send("좋은 아침입니다! 출근 시, `!출근` 명령어를 입력하시기 바랍니다.");
+        channel.send(
+          "좋은 아침입니다! 출근 시, `!출근` 명령어를 입력하시기 바랍니다."
+        );
       }
     },
     {
@@ -46,13 +48,15 @@ client.once("ready", () => {
   );
 
   cron.schedule(
-    "0 18 * * *",
+    "0 18 * * 1-5",
     () => {
       const channel = client.channels.cache.find(
         (channel) => channel.name === "출퇴근"
       );
       if (channel) {
-        channel.send("퇴근 시간이 다가왔습니다! 퇴근 시, `!퇴근` 명령어를 입력해주세요.");
+        channel.send(
+          "퇴근 시간이 다가왔습니다! 퇴근 시, `!퇴근` 명령어를 입력해주세요."
+        );
       }
     },
     {

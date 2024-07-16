@@ -26,3 +26,17 @@ services:
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
       - TZ=Asia/Seoul
     restart: always
+
+  client:
+    build:
+      context: ./TMUB-client/web-vue
+      dockerfile: Dockerfile
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./TMUB-client/web-vue:/app
+      - /app/node_modules
+    environment:
+      - API_URL=http://api-server:3333
+      - TZ=Asia/Seoul
+    restart: always

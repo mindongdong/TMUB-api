@@ -136,4 +136,19 @@ router.get("/leaderboard", (req, res) => {
   res.json({ leaderboard });
 });
 
+// 날짜별 모든 유저의 출퇴근 시간을 조회하는 엔드포인트
+router.get('/all-records', (req, res) => {
+  const directoryPath = path.join(path.resolve(), 'data', 'timeblocks');
+  const files = fs.readdirSync(directoryPath);
+  let allRecords = [];
+
+  files.forEach((file) => {
+    const filePath = path.join(directoryPath, file);
+    const fileRecords = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    allRecords = allRecords.concat(fileRecords);
+  });
+
+  res.json(allRecords);
+});
+
 module.exports = router;
