@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  api-server:
+    build: 
+      context: ./api-nodeJS
+      dockerfile: Dockerfile
+    ports:
+      - "3334:3334"
+    volumes:
+      - ./api-nodeJS:/app
+    environment:
+      - PORT=3334
+      - NODE_ENV=production
+      - TZ=Asia/Seoul
+    restart: always
+
+  client:
+    build:
+      context: ./TMUB-client/web-vue
+      dockerfile: Dockerfile.dev
+    ports:
+      - "8082:8080"
+    volumes:
+      - ./TMUB-client/web-vue:/app
+      - /app/node_modules
+    environment:
+      - API_URL=http://api-server:3334
+      - TZ=Asia/Seoul
+    restart: always
