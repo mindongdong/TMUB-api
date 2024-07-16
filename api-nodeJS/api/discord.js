@@ -78,6 +78,13 @@ const formatLeaderboard = (records) => {
   return leaderboard;
 };
 
+function convertToKST(timestamp) {
+  const date = new Date(timestamp);
+  // 한국 시간대로 변환 9시간 더하기
+  date.setHours(date.getHours() + 9);
+  return date.toISOString();
+}
+
 // 출근 시간 기록 엔드포인트
 router.post("/record", (req, res) => {
   const { user_id, username, action } = req.body;
@@ -137,18 +144,141 @@ router.get("/leaderboard", (req, res) => {
 });
 
 // 날짜별 모든 유저의 출퇴근 시간을 조회하는 엔드포인트
-router.get('/all-records', (req, res) => {
-  const directoryPath = path.join(path.resolve(), 'data', 'timeblocks');
+router.get("/all-records", (req, res) => {
+  const directoryPath = path.join(path.resolve(), "data", "timeblocks");
   const files = fs.readdirSync(directoryPath);
   let allRecords = [];
 
   files.forEach((file) => {
     const filePath = path.join(directoryPath, file);
-    const fileRecords = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-    allRecords = allRecords.concat(fileRecords);
+    try {
+      const fileContent = fs.readFileSync(filePath, "utf8");
+      if (fileContent) {
+        const fileRecords = JSON.parse(fileContent);
+        allRecords = allRecords.concat(fileRecords);
+      }
+    } catch (err) {
+      console.error(`Error reading or parsing file ${filePath}:`, err);
+    }
   });
 
   res.json(allRecords);
+});
+
+// 현재까지 출근 시간이 기록된 날짜들만을 조회하는 엔드포인트
+router.get("/recorded-dates", (req, res) => {
+  const directoryPath = path.join(path.resolve(), "data", "timeblocks");
+  const files = fs.readdirSync(directoryPath);
+  const recordedDates = files
+    .map((file) => {
+      const parts = file.split("_");
+      if (parts.length > 1) {
+        return parts[1].split(".")[0];
+      } else {
+        return null;
+      }
+    })
+    .filter((date) => date !== null); // null 값을 필터링
+
+  // 중복 제거 및 정렬
+  const uniqueDates = [...new Set(recordedDates)].sort();
+
+  res.json(uniqueDates);
+});
+
+// 현재까지 출퇴근 시간이 하루라도 기록된 유저 목록 조회하는 엔드포인트
+router.get("/recorded-users", (req, res) => {
+  const directoryPath = path.join(path.resolve(), "data", "timeblocks");
+  const files = fs.readdirSync(directoryPath);
+  let users = new Set();
+
+  files.forEach((file) => {
+    const filePath = path.join(directoryPath, file);
+    try {
+      const fileContent = fs.readFileSync(filePath, "utf8");
+      if (fileContent) {
+        const fileRecords = JSON.parse(fileContent);
+        fileRecords.forEach((record) => {
+          users.add(record.username);
+        });
+      }
+    } catch (err) {
+      console.error(`Error reading or parsing file ${filePath}:`, err);
+    }
+  });
+
+  res.json(Array.from(users));
+});
+
+/// 특정 날짜 범위 안의 특정 유저의 출퇴근 시간을 조회하는 엔드포인트
+router.get("/records-by-date", (req, res) => {
+  const { startDate, endDate, username } = req.query;
+  const directoryPath = path.join(path.resolve(), "data", "timeblocks");
+  const files = fs.readdirSync(directoryPath);
+  let allRecords = [];
+
+  files.forEach((file) => {
+    const parts = file.split("_");
+    if (parts.length < 2) {
+      console.error(`Invalid file name format: ${file}`);
+      return;
+    }
+
+    const dateStr = parts[1].split(".")[0];
+    if (!dateStr) {
+      console.error(`Invalid date format in file name: ${file}`);
+      return;
+    }
+
+    const date = new Date(dateStr);
+    const start = new Date(startDate);
+    const end = new Date(endDate);
+    if (date >= start && date <= end) {
+      const filePath = path.join(directoryPath, file);
+      try {
+        const fileContent = fs.readFileSync(filePath, "utf8");
+        if (fileContent) {
+          const fileRecords = JSON.parse(fileContent);
+          const userRecords = fileRecords.filter(
+            (record) => record.username === username
+          );
+          allRecords = allRecords.concat(userRecords);
+        }
+      } catch (err) {
+        console.error(`Error reading or parsing file ${filePath}:`, err);
+      }
+    }
+  });
+
+  // 데이터를 원하는 형식으로 가공
+  const events = [];
+  const groupedRecords = {};
+
+  allRecords.forEach((record) => {
+    const date = record.timestamp.split("T")[0];
+    if (!groupedRecords[date]) {
+      groupedRecords[date] = { start: null, end: null };
+    }
+    if (record.action === "출근") {
+      groupedRecords[date].start = convertToKST(record.timestamp);
+    } else if (record.action === "퇴근") {
+      groupedRecords[date].end = convertToKST(record.timestamp);
+    }
+  });
+
+  for (const date in groupedRecords) {
+    const { start, end } = groupedRecords[date];
+    if (start && end) {
+      events.push({
+        start: start.replace("T", " ").substring(0, 16),
+        end: end.replace("T", " ").substring(0, 16),
+        title: "Working in the lab",
+        class: "working hours",
+      });
+    }
+  }
+
+  res.json(events);
 });
 
 module.exports = router;
