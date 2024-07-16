@@ -20,7 +20,7 @@ services:
       context: ./discord-bot
       dockerfile: Dockerfile
     depends_on:
-      - api-server
+      - api
     environment:
       - NODE_ENV=production
       - API_URL=http://api:3333
@@ -38,6 +38,6 @@ services:
       - ./TMUB-client/web-vue:/app
       - /app/node_modules
     environment:
-      - API_URL=http://api-server:3333
+      - API_URL=http://api:3333
       - TZ=Asia/Seoul
     restart: always
